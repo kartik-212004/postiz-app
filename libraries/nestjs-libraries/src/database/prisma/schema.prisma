@@ -130,6 +130,9 @@ model User {
 }
 
 // Only digests are persisted; bearer tokens remain with the client/email.
+// Apply with the existing prisma-db-push process before deploying the backend.
+// Legacy sessions and reset/activation links are rejected: users must log in
+// again or request new links. Keep JWT_SECRET unchanged (also used for encryption).
 model UserAuthToken {
   tokenHash String   @id
   userId    String

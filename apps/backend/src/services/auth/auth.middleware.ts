@@ -1,6 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { User } from '@prisma/client';
 import { OrganizationService } from '@gitroom/nestjs-libraries/database/prisma/organizations/organization.service';
 import { UsersService } from '@gitroom/nestjs-libraries/database/prisma/users/users.service';
 import { getCookieUrlFromDomain } from '@gitroom/helpers/subdomain/subdomain.management';
@@ -41,7 +40,6 @@ export class AuthMiddleware implements NestMiddleware {
       let user = await this._userService.getUserForAuthToken(auth, 'session');
       const orgHeader = req.cookies.showorg || req.headers.showorg;
       if (!user || !user.activated) {
-        removeAuth(res);
         throw new HttpForbiddenException();
       }
 

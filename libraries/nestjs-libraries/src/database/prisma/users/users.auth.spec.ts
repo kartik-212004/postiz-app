@@ -48,6 +48,13 @@ jest.mock('@gitroom/nestjs-libraries/newsletter/newsletter.service', () => ({
   NewsletterService: { register: jest.fn().mockResolvedValue(undefined) },
 }));
 
+// Run against a disposable database only:
+// docker run --detach --rm --name postiz-auth-test -e POSTGRES_USER=f01_test -e POSTGRES_PASSWORD=f01_test_only -e POSTGRES_DB=postiz_auth_test -p 127.0.0.1:55439:5432 postgres:17-alpine
+// export AUTH_TEST_DATABASE_URL=postgresql://f01_test:f01_test_only@127.0.0.1:55439/postiz_auth_test
+// Once Postgres is ready, initialize its schema and run:
+// DATABASE_URL="$AUTH_TEST_DATABASE_URL" pnpm exec prisma db push --schema libraries/nestjs-libraries/src/database/prisma/schema.prisma --skip-generate
+// pnpm exec jest --config jest.auth.config.cjs --runInBand
+// docker stop postiz-auth-test
 const databaseUrl = process.env.AUTH_TEST_DATABASE_URL;
 const databaseTests = databaseUrl ? describe : describe.skip;
 
